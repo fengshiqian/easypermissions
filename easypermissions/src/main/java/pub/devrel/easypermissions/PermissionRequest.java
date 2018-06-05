@@ -25,6 +25,7 @@ public final class PermissionRequest {
     private final String[] mPerms;
     private final int mRequestCode;
     private final String mRationale;
+    private final boolean mShouldShowRationale;
     private final String mPositiveButtonText;
     private final String mNegativeButtonText;
     private final int mTheme;
@@ -33,6 +34,7 @@ public final class PermissionRequest {
                               String[] perms,
                               int requestCode,
                               String rationale,
+                              boolean shouldShowRationale,
                               String positiveButtonText,
                               String negativeButtonText,
                               int theme) {
@@ -40,6 +42,7 @@ public final class PermissionRequest {
         mPerms = perms.clone();
         mRequestCode = requestCode;
         mRationale = rationale;
+        mShouldShowRationale = shouldShowRationale;
         mPositiveButtonText = positiveButtonText;
         mNegativeButtonText = negativeButtonText;
         mTheme = theme;
@@ -63,6 +66,10 @@ public final class PermissionRequest {
     @NonNull
     public String getRationale() {
         return mRationale;
+    }
+
+    public boolean isShouldShowRationale() {
+        return mShouldShowRationale;
     }
 
     @NonNull
@@ -121,6 +128,7 @@ public final class PermissionRequest {
         private final String[] mPerms;
 
         private String mRationale;
+        private boolean mShouldShowRationale = true;
         private String mPositiveButtonText;
         private String mNegativeButtonText;
         private int mTheme = -1;
@@ -184,6 +192,16 @@ public final class PermissionRequest {
         @NonNull
         public Builder setRationale(@StringRes int resId) {
             mRationale = mHelper.getContext().getString(resId);
+            return this;
+        }
+
+        /**
+         * Should show a rationale if the system requests it.
+         *
+         * @param shouldShowRationale true if needed
+         */
+        public Builder setShouldShowRationale(boolean shouldShowRationale) {
+            this.mShouldShowRationale = shouldShowRationale;
             return this;
         }
 
@@ -262,6 +280,7 @@ public final class PermissionRequest {
                     mPerms,
                     mRequestCode,
                     mRationale,
+                    mShouldShowRationale,
                     mPositiveButtonText,
                     mNegativeButtonText,
                     mTheme);

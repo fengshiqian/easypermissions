@@ -65,13 +65,14 @@ public abstract class PermissionHelper<T> {
         return false;
     }
 
-    public void requestPermissions(@NonNull String rationale,
+    public void requestPermissions(boolean shouldShowRationale,
+                                   @NonNull String rationale,
                                    @NonNull String positiveButton,
                                    @NonNull String negativeButton,
                                    @StyleRes int theme,
                                    int requestCode,
                                    @NonNull String... perms) {
-        if (shouldShowRationale(perms)) {
+        if (shouldShowRationale && shouldShowRationale(perms)) {
             showRequestPermissionRationale(
                     rationale, positiveButton, negativeButton, theme, requestCode, perms);
         } else {

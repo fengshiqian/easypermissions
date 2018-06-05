@@ -100,6 +100,48 @@ public class EasyPermissions {
     }
 
     /**
+     * Request a set of permissions, will not show a rationale if the system requests it.
+     *
+     * @param host        requesting context.
+     * @param requestCode request code to track this request, must be &lt; 256.
+     * @param perms       a set of permissions to be requested.
+     * @see Manifest.permission
+     */
+    public static void requestPermissions(
+            @NonNull Activity host, int requestCode, @Size(min = 1) @NonNull String... perms) {
+        requestPermissions(
+                new PermissionRequest.Builder(host, requestCode, perms)
+                        .setShouldShowRationale(false)
+                        .build());
+    }
+
+    /**
+     * Request permissions from a Support Fragment with standard OK/Cancel buttons.
+     *
+     * @see #requestPermissions(Activity, int, String...)
+     */
+    public static void requestPermissions(
+            @NonNull Fragment host, int requestCode, @Size(min = 1) @NonNull String... perms) {
+        requestPermissions(
+                new PermissionRequest.Builder(host, requestCode, perms)
+                        .setShouldShowRationale(false)
+                        .build());
+    }
+
+    /**
+     * Request permissions from a standard Fragment with standard OK/Cancel buttons.
+     *
+     * @see #requestPermissions(Activity, int, String...)
+     */
+    public static void requestPermissions(
+            @NonNull android.app.Fragment host, int requestCode, @Size(min = 1) @NonNull String... perms) {
+        requestPermissions(
+                new PermissionRequest.Builder(host, requestCode, perms)
+                        .setShouldShowRationale(false)
+                        .build());
+    }
+
+    /**
      * Request a set of permissions, showing a rationale if the system requests it.
      *
      * @param host        requesting context.
@@ -225,6 +267,7 @@ public class EasyPermissions {
 
         // Request permissions
         request.getHelper().requestPermissions(
+                request.isShouldShowRationale(),
                 request.getRationale(),
                 request.getPositiveButtonText(),
                 request.getNegativeButtonText(),
