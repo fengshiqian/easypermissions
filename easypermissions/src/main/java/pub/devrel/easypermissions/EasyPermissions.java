@@ -265,6 +265,19 @@ public class EasyPermissions {
             return;
         }
 
+        // Only request permissions that have not granted
+        // On some platform,permission dialog will show again when you request a permission even you have granted it.
+        // If you grant a permission at the first time than deny the same permission at the second time,app will crash
+        List<String> permsList = new ArrayList<>(request.getPerms().length);
+        for (String perm : request.getPerms()) {
+            if (ContextCompat.checkSelfPermission(request.getHelper().getContext(), perm)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permsList.add(perm);
+            }
+        }
+        String[] perms = new String[permsList.size()];
+        permsList.toArray(perms);
+
         // Request permissions
         request.getHelper().requestPermissions(
                 request.isShouldShowRationale(),
@@ -273,7 +286,7 @@ public class EasyPermissions {
                 request.getNegativeButtonText(),
                 request.getTheme(),
                 request.getRequestCode(),
-                request.getPerms());
+                perms);
     }
 
     /**
@@ -333,7 +346,7 @@ public class EasyPermissions {
     /**
      * Check if at least one permission in the list of denied permissions has been permanently
      * denied (user clicked "Never ask again").
-     *
+     * <p>
      * <b>Note</b>: Due to a limitation in the information provided by the Android
      * framework permissions API, this method only works after the permission
      * has been denied and your app has received the onPermissionsDenied callback.
